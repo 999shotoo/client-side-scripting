@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 3: JSON Objects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-500 to-purple-600 min-h-screen p-4 md:p-8">
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-4xl font-bold text-white text-center mb-8 drop-shadow-lg">Program 3: JSON Objects Example</h1>
+        <div id="output"></div>
+    </div>
+    
+    <script>
+        // Creating JSON objects
+        const student = {
+            "id": 101,
+            "name": "John Doe",
+            "age": 20,
+            "email": "john.doe@example.com",
+            "courses": ["Mathematics", "Physics", "Computer Science"],
+            "isActive": true
+        };
+
+        const employees = [
+            {
+                "employeeId": 1001,
+                "name": "Alice Smith",
+                "position": "Software Engineer",
+                "department": "IT",
+                "salary": 75000
+            },
+            {
+                "employeeId": 1002,
+                "name": "Bob Johnson",
+                "position": "Project Manager",
+                "department": "Management",
+                "salary": 85000
+            }
+        ];
+
+        const product = {
+            "productId": "P001",
+            "name": "Laptop",
+            "category": "Electronics",
+            "price": 999.99,
+            "inStock": true,
+            "specifications": {
+                "brand": "TechBrand",
+                "RAM": "16GB",
+                "storage": "512GB SSD"
+            }
+        };
+
+        // Display the objects
+        const output = document.getElementById('output');
+        
+        output.innerHTML = `
+            <div class="bg-white rounded-xl shadow-2xl p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-indigo-500 pb-2">Student Object:</h2>
+                <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm">${JSON.stringify(student, null, 2)}</pre>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-2xl p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-indigo-500 pb-2">Employees Array:</h2>
+                <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm">${JSON.stringify(employees, null, 2)}</pre>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-2xl p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-indigo-500 pb-2">Product Object:</h2>
+                <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm">${JSON.stringify(product, null, 2)}</pre>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-2xl p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-indigo-500 pb-2">Accessing Object Properties:</h2>
+                <div class="space-y-2">
+                    <p class="text-gray-700"><strong class="text-indigo-600">Student Name:</strong> ${student.name}</p>
+                    <p class="text-gray-700"><strong class="text-indigo-600">Student Courses:</strong> ${student.courses.join(', ')}</p>
+                    <p class="text-gray-700"><strong class="text-indigo-600">First Employee:</strong> ${employees[0].name} - ${employees[0].position}</p>
+                    <p class="text-gray-700"><strong class="text-indigo-600">Product Price:</strong> $${product.price}</p>
+                    <p class="text-gray-700"><strong class="text-indigo-600">Product RAM:</strong> ${product.specifications.RAM}</p>
+                </div>
+            </div>
+        `;
+
+        console.log("Student Object:", student);
+        console.log("Employees Array:", employees);
+        console.log("Product Object:", product);
+    </script>
+</body>
+</html>

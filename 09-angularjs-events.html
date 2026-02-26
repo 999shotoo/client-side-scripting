@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="eventApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 9: AngularJS Events</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-pink-400 via-purple-500 to-red-500 min-h-screen py-6 px-4" ng-controller="EventController">
+    <h1 class="text-4xl font-bold text-center text-white drop-shadow-lg mb-8">Program 9: AngularJS Events Implementation</h1>
+    
+    <div class="max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
+        <!-- 1. ng-click Event -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">1. ng-click Event</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directive:</strong> <code>ng-click="expression"</code></p>
+                <p>Triggered when an element is clicked.</p>
+                
+                <button class="px-6 py-3 m-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold rounded-lg transition transform hover:scale-105" ng-click="clickCount = clickCount + 1">
+                    Click Me!
+                </button>
+                <button class="px-6 py-3 m-1 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition" ng-click="incrementCounter()">
+                    Increment
+                </button>
+                <button class="px-6 py-3 m-1 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg transition" ng-click="resetCounter()">
+                    Reset
+                </button>
+                
+                <div class="text-5xl font-bold text-cyan-600 my-6">{{ clickCount }}</div>
+                <div class="bg-yellow-100 p-4 my-4 rounded-lg border-l-4 border-yellow-500 min-h-[50px]">
+                    <strong>Click Count:</strong> {{ clickCount }} clicks
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. ng-dblclick Event -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">2. ng-dblclick Event</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directive:</strong> <code>ng-dblclick="expression"</code></p>
+                <p>Triggered when an element is double-clicked.</p>
+                
+                <div class="p-10 text-center bg-cyan-100 border-4 border-dashed border-cyan-600 rounded-xl cursor-pointer transition hover:bg-cyan-200 hover:scale-105 my-4" ng-dblclick="handleDoubleClick()">
+                    <h3>Double-Click This Box</h3>
+                    <p>Double-clicked: {{ dblClickCount }} times</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. ng-mouseenter and ng-mouseleave Events -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">3. ng-mouseenter & ng-mouseleave Events</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directives:</strong> <code>ng-mouseenter</code> and <code>ng-mouseleave</code></p>
+                
+                <div class="p-16 bg-indigo-100 rounded-xl text-center my-4" 
+                     ng-mouseenter="mouseEnter()" 
+                     ng-mouseleave="mouseLeave()"
+                     ng-style="{'background-color': isMouseOver ? '#c5cae9' : '#e8eaf6'}">
+                    <h3>{{ mouseStatus }}</h3>
+                    <p>Mouse entered: {{ mouseEnterCount }} times</p>
+                    <p>Mouse left: {{ mouseLeaveCount }} times</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. ng-mousemove Event -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">4. ng-mousemove Event</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directive:</strong> <code>ng-mousemove="expression"</code></p>
+                
+                <div class="p-16 bg-indigo-100 rounded-xl text-center my-4" ng-mousemove="trackMouse($event)">
+                    <h3>Move Your Mouse Here</h3>
+                    <div class="text-2xl text-indigo-700 font-bold">
+                        X: {{ mouseX }} | Y: {{ mouseY }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. ng-keydown, ng-keyup, ng-keypress Events -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">5. Keyboard Events</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directives:</strong> <code>ng-keydown</code>, <code>ng-keyup</code>, <code>ng-keypress</code></p>
+                
+                <input type="text" 
+                       ng-model="keyboardInput" 
+                       ng-keydown="onKeyDown($event)"
+                       ng-keyup="onKeyUp($event)"
+                       ng-keypress="onKeyPress($event)"
+                       placeholder="Type something..." class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-cyan-600 my-2">
+                
+                <div class="bg-yellow-100 p-4 my-4 rounded-lg border-l-4 border-yellow-500 min-h-[50px]">
+                    <p><strong>Input Value:</strong> {{ keyboardInput }}</p>
+                    <p><strong>Last Key:</strong> <span class="bg-yellow-300 px-1 rounded">{{ lastKey }}</span></p>
+                    <p><strong>Key Code:</strong> {{ lastKeyCode }}</p>
+                    <p><strong>Event Type:</strong> {{ lastEventType }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. ng-change Event -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">6. ng-change Event</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directive:</strong> <code>ng-change="expression"</code></p>
+                <p>Triggered when the value of an input changes.</p>
+                
+                <input type="text" 
+                       ng-model="changeInput" 
+                       ng-change="handleChange()"
+                       placeholder="Type to trigger change event" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-cyan-600 my-2">
+                
+                <div class="bg-yellow-100 p-4 my-4 rounded-lg border-l-4 border-yellow-500 min-h-[50px]">
+                    <p><strong>Current Value:</strong> {{ changeInput }}</p>
+                    <p><strong>Character Count:</strong> {{ changeInput.length || 0 }}</p>
+                    <p><strong>Change Count:</strong> {{ changeCount }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. ng-focus and ng-blur Events -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">7. ng-focus & ng-blur Events</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directives:</strong> <code>ng-focus</code> and <code>ng-blur</code></p>
+                
+                <div class="grid grid-cols-2 gap-4 my-4">
+                    <div>
+                        <input type="text" 
+                               ng-model="focusInput1"
+                               ng-focus="onFocus('Field 1')"
+                               ng-blur="onBlur('Field 1')"
+                               placeholder="Click to focus (Field 1)" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-cyan-600 my-2">
+                    </div>
+                    <div>
+                        <input type="text" 
+                               ng-model="focusInput2"
+                               ng-focus="onFocus('Field 2')"
+                               ng-blur="onBlur('Field 2')"
+                               placeholder="Click to focus (Field 2)" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-cyan-600 my-2">
+                    </div>
+                </div>
+                
+                <div class="bg-yellow-100 p-4 my-4 rounded-lg border-l-4 border-yellow-500 min-h-[50px]">
+                    <p><strong>Status:</strong> {{ focusStatus }}</p>
+                    <p><strong>Focus Events:</strong> {{ focusEvents }}</p>
+                    <p><strong>Blur Events:</strong> {{ blurEvents }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. ng-submit Event -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">8. ng-submit Event</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directive:</strong> <code>ng-submit="expression"</code></p>
+                <p>Triggered when a form is submitted.</p>
+                
+                <form ng-submit="handleSubmit()" name="submitForm">
+                    <input type="text" 
+                           ng-model="formData.name" 
+                           placeholder="Enter your name" 
+                           required class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-cyan-600 my-2">
+                    <input type="text" 
+                           ng-model="formData.email" 
+                           placeholder="Enter your email" 
+                           required class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-cyan-600 my-2">
+                    <button type="submit" class="px-6 py-3 m-1 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition">Submit Form</button>
+                </form>
+                
+                <div class="bg-yellow-100 p-4 my-4 rounded-lg border-l-4 border-yellow-500 min-h-[50px]" ng-show="submitted">
+                    <h4>Form Submitted!</h4>
+                    <p><strong>Name:</strong> {{ formData.name }}</p>
+                    <p><strong>Email:</strong> {{ formData.email }}</p>
+                    <p><strong>Submission Count:</strong> {{ submitCount }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. ng-copy, ng-cut, ng-paste Events -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">9. Clipboard Events</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Directives:</strong> <code>ng-copy</code>, <code>ng-cut</code>, <code>ng-paste</code></p>
+                
+                <textarea ng-model="clipboardText"
+                          ng-copy="onCopy()"
+                          ng-cut="onCut()"
+                          ng-paste="onPaste()"
+                          placeholder="Try copying, cutting, or pasting text here..."
+                          rows="4" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-cyan-600 my-2"></textarea>
+                
+                <div class="bg-yellow-100 p-4 my-4 rounded-lg border-l-4 border-yellow-500 min-h-[50px]">
+                    <p><strong>Copy Events:</strong> {{ copyCount }}</p>
+                    <p><strong>Cut Events:</strong> {{ cutCount }}</p>
+                    <p><strong>Paste Events:</strong> {{ pasteCount }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. Custom Event Handler with $event Object -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">10. Using $event Object</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p><strong>Accessing event details using $event parameter</strong></p>
+                
+                <button class="px-6 py-3 m-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold rounded-lg transition transform hover:scale-105" ng-click="handleCustomEvent($event, 'Button 1')">
+                    Button 1
+                </button>
+                <button class="px-6 py-3 m-1 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-lg transition" ng-click="handleCustomEvent($event, 'Button 2')">
+                    Button 2
+                </button>
+                <button class="px-6 py-3 m-1 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg transition" ng-click="handleCustomEvent($event, 'Button 3')">
+                    Button 3
+                </button>
+                
+                <div class="bg-yellow-100 p-4 my-4 rounded-lg border-l-4 border-yellow-500 min-h-[50px]" ng-show="eventDetails">
+                    <h4>Event Details:</h4>
+                    <p><strong>Button:</strong> {{ eventDetails.button }}</p>
+                    <p><strong>Event Type:</strong> {{ eventDetails.type }}</p>
+                    <p><strong>Target:</strong> {{ eventDetails.target }}</p>
+                    <p><strong>Timestamp:</strong> {{ eventDetails.timestamp }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. Event Log -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">11. Event Activity Log</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p>All event activities are logged below:</p>
+                <button class="px-6 py-3 m-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold rounded-lg transition transform hover:scale-105" ng-click="clearLog()">Clear Log</button>
+                
+                <div class="bg-gray-100 p-4 rounded-lg max-h-48 overflow-y-auto font-mono text-sm">
+                    <div class="p-1 my-1 bg-white border-l-2 border-cyan-600 pl-2" ng-repeat="log in eventLog track by $index">
+                        [{{ log.time }}] {{ log.message }}
+                    </div>
+                    <div ng-show="eventLog.length === 0" style="text-align: center; color: #999;">
+                        No events logged yet. Start interacting with the page!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. Multiple Events on Same Element -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-l-4 border-cyan-600 shadow-sm">
+            <h2 class="text-2xl font-bold text-teal-700 mt-0 border-b-2 border-cyan-600 pb-2">12. Multiple Events on Same Element</h2>
+            <div class="bg-white p-6 my-4 rounded-lg shadow-sm">
+                <p>This element responds to multiple events simultaneously:</p>
+                
+                <div class="p-10 text-center bg-cyan-100 border-4 border-dashed border-cyan-600 rounded-xl cursor-pointer transition hover:bg-cyan-200 hover:scale-105 my-4"
+                     ng-click="logEvent('Clicked')"
+                     ng-dblclick="logEvent('Double-Clicked')"
+                     ng-mouseenter="logEvent('Mouse Entered')"
+                     ng-mouseleave="logEvent('Mouse Left')">
+                    <h3>Interactive Multi-Event Box</h3>
+                    <p>Try: Click, Double-Click, Mouse Enter/Leave</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('eventApp', []);
+        
+        app.controller('EventController', function($scope) {
+            // Initialize variables
+            $scope.clickCount = 0;
+            $scope.dblClickCount = 0;
+            $scope.mouseEnterCount = 0;
+            $scope.mouseLeaveCount = 0;
+            $scope.mouseStatus = 'Hover over this area';
+            $scope.isMouseOver = false;
+            $scope.mouseX = 0;
+            $scope.mouseY = 0;
+            $scope.keyboardInput = '';
+            $scope.lastKey = '';
+            $scope.lastKeyCode = '';
+            $scope.lastEventType = '';
+            $scope.changeInput = '';
+            $scope.changeCount = 0;
+            $scope.focusInput1 = '';
+            $scope.focusInput2 = '';
+            $scope.focusStatus = 'No field focused';
+            $scope.focusEvents = 0;
+            $scope.blurEvents = 0;
+            $scope.formData = { name: '', email: '' };
+            $scope.submitted = false;
+            $scope.submitCount = 0;
+            $scope.clipboardText = '';
+            $scope.copyCount = 0;
+            $scope.cutCount = 0;
+            $scope.pasteCount = 0;
+            $scope.eventDetails = null;
+            $scope.eventLog = [];
+            
+            // Click events
+            $scope.incrementCounter = function() {
+                $scope.clickCount++;
+                $scope.logEvent('Counter incremented to ' + $scope.clickCount);
+            };
+            
+            $scope.resetCounter = function() {
+                $scope.clickCount = 0;
+                $scope.logEvent('Counter reset to 0');
+            };
+            
+            // Double-click event
+            $scope.handleDoubleClick = function() {
+                $scope.dblClickCount++;
+                $scope.logEvent('Box double-clicked (Count: ' + $scope.dblClickCount + ')');
+            };
+            
+            // Mouse enter/leave events
+            $scope.mouseEnter = function() {
+                $scope.mouseEnterCount++;
+                $scope.mouseStatus = 'Mouse is over the area!';
+                $scope.isMouseOver = true;
+                $scope.logEvent('Mouse entered tracking area');
+            };
+            
+            $scope.mouseLeave = function() {
+                $scope.mouseLeaveCount++;
+                $scope.mouseStatus = 'Mouse left the area';
+                $scope.isMouseOver = false;
+                $scope.logEvent('Mouse left tracking area');
+            };
+            
+            // Mouse move event
+            $scope.trackMouse = function(event) {
+                $scope.mouseX = event.offsetX;
+                $scope.mouseY = event.offsetY;
+            };
+            
+            // Keyboard events
+            $scope.onKeyDown = function(event) {
+                $scope.lastKey = event.key;
+                $scope.lastKeyCode = event.keyCode;
+                $scope.lastEventType = 'keydown';
+                $scope.logEvent('Key down: ' + event.key + ' (Code: ' + event.keyCode + ')');
+            };
+            
+            $scope.onKeyUp = function(event) {
+                $scope.lastEventType = 'keyup';
+            };
+            
+            $scope.onKeyPress = function(event) {
+                $scope.lastEventType = 'keypress';
+            };
+            
+            // Change event
+            $scope.handleChange = function() {
+                $scope.changeCount++;
+                $scope.logEvent('Input changed (Count: ' + $scope.changeCount + ')');
+            };
+            
+            // Focus and blur events
+            $scope.onFocus = function(fieldName) {
+                $scope.focusStatus = fieldName + ' is focused';
+                $scope.focusEvents++;
+                $scope.logEvent('Focus on ' + fieldName);
+            };
+            
+            $scope.onBlur = function(fieldName) {
+                $scope.focusStatus = fieldName + ' lost focus';
+                $scope.blurEvents++;
+                $scope.logEvent('Blur on ' + fieldName);
+            };
+            
+            // Submit event
+            $scope.handleSubmit = function() {
+                $scope.submitted = true;
+                $scope.submitCount++;
+                $scope.logEvent('Form submitted (Count: ' + $scope.submitCount + ')');
+            };
+            
+            // Clipboard events
+            $scope.onCopy = function() {
+                $scope.copyCount++;
+                $scope.logEvent('Text copied (Count: ' + $scope.copyCount + ')');
+            };
+            
+            $scope.onCut = function() {
+                $scope.cutCount++;
+                $scope.logEvent('Text cut (Count: ' + $scope.cutCount + ')');
+            };
+            
+            $scope.onPaste = function() {
+                $scope.pasteCount++;
+                $scope.logEvent('Text pasted (Count: ' + $scope.pasteCount + ')');
+            };
+            
+            // Custom event handler
+            $scope.handleCustomEvent = function(event, buttonName) {
+                $scope.eventDetails = {
+                    button: buttonName,
+                    type: event.type,
+                    target: event.target.tagName,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                $scope.logEvent('Custom event from ' + buttonName);
+            };
+            
+            // Event logging
+            $scope.logEvent = function(message) {
+                $scope.eventLog.unshift({
+                    time: new Date().toLocaleTimeString(),
+                    message: message
+                });
+                
+                // Keep only last 20 events
+                if ($scope.eventLog.length > 20) {
+                    $scope.eventLog.pop();
+                }
+            };
+            
+            $scope.clearLog = function() {
+                $scope.eventLog = [];
+                $scope.logEvent('Event log cleared');
+            };
+        });
+    </script>
+</body>
+</html>
+
+

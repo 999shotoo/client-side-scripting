@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="greeting-card">
+    <h1>{{ greeting }}</h1>
+    <p class="message">{{ message }}</p>
+    <p class="time">Current Time: {{ currentTime }}</p>
+    <button (click)="refreshGreeting()" class="refresh-btn">Refresh Greeting</button>
+  </div>
+
+  <div class="info-card">
+    <h2>Welcome to {{ title }}</h2>
+    <p>This Angular application displays a greeting message on the webpage.</p>
+    <ul>
+      <li>Dynamic greeting based on time of day</li>
+      <li>Real-time clock display</li>
+      <li>Interactive refresh button</li>
+    </ul>
+  </div>
+</div>

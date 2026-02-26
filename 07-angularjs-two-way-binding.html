@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bindingApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 7: AngularJS Two-Way Data Binding</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-red-400 via-pink-500 to-teal-400 min-h-screen py-8 px-4" ng-controller="BindingController">
+    <h1 class="text-4xl font-bold text-center text-white drop-shadow-lg mb-8">Program 7: AngularJS Two-Way Data Binding</h1>
+    
+    <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
+        <!-- Example 1: Simple Text Binding -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">1. Simple Text Input Binding</span></h2>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Enter Your Name:</span></label>
+                <input type="text" ng-model="userName" placeholder="Type your name here..." class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            <div class="bg-white p-4 rounded-lg mt-4 border-2 border-teal-500 min-h-[50px]">
+                <span class="font-bold text-teal-500 mb-2 block">Real-time Output:</span>
+                <div class="text-gray-800 text-base">
+                    Hello, <strong>{{ userName || 'Guest' }}</strong>! Welcome to AngularJS.
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 italic">✓ Changes appear instantly as you type</p>
+        </div>
+
+        <!-- Example 2: Multiple Input Binding -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">2. User Profile Form (Multiple Bindings)</span></h2>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">First Name:</span></label>
+                <input type="text" ng-model="profile.firstName" placeholder="First name" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Last Name:</span></label>
+                <input type="text" ng-model="profile.lastName" placeholder="Last name" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Email:</span></label>
+                <input type="email" ng-model="profile.email" placeholder="email@example.com" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Age:</span></label>
+                <input type="number" ng-model="profile.age" placeholder="Age" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-md mt-4">
+                <h3>Live Preview:</h3>
+                <p><strong>Full Name:</strong> {{ profile.firstName }} {{ profile.lastName }}</p>
+                <p><strong>Email:</strong> {{ profile.email || 'Not provided' }}</p>
+                <p><strong>Age:</strong> {{ profile.age || 'Not provided' }}</p>
+            </div>
+        </div>
+
+        <!-- Example 3: Textarea Binding -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">3. Textarea Two-Way Binding</span></h2>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Write Your Message:</span></label>
+                <textarea ng-model="message" rows="5" placeholder="Type your message here..." class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition"></textarea>
+            </div>
+            <div class="bg-white p-4 rounded-lg mt-4 border-2 border-teal-500 min-h-[50px]">
+                <span class="font-bold text-teal-500 mb-2 block">Preview:</span>
+                <div class="text-gray-800 text-base">{{ message || 'Your message will appear here...' }}</div>
+            </div>
+            <p class="text-sm text-gray-500 italic">Character Count: <strong>{{ message.length || 0 }}</strong></p>
+        </div>
+
+        <!-- Example 4: Select Dropdown Binding -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">4. Dropdown Selection Binding</span></h2>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Select Your Country:</span></label>
+                <select ng-model="selectedCountry" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+                    <option value="">-- Choose a country --</option>
+                    <option value="USA">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="India">India</option>
+                    <option value="Australia">Australia</option>
+                </select>
+            </div>
+            <div class="bg-white p-4 rounded-lg mt-4 border-2 border-teal-500 min-h-[50px]">
+                <span class="font-bold text-teal-500 mb-2 block">Selected Country:</span>
+                <div class="text-gray-800 text-base">
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-teal-500 text-white">{{ selectedCountry || 'None selected' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 5: Checkbox Binding -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">5. Checkbox Two-Way Binding</span></h2>
+            <div class="my-2">
+                <input type="checkbox" id="subscribe" ng-model="subscription.newsletter">
+                <label for="subscribe"><span class="block mb-2 text-gray-700 font-bold">Subscribe to Newsletter</span></label>
+            </div>
+            <div class="my-2">
+                <input type="checkbox" id="terms" ng-model="subscription.terms">
+                <label for="terms"><span class="block mb-2 text-gray-700 font-bold">Accept Terms and Conditions</span></label>
+            </div>
+            <div class="my-2">
+                <input type="checkbox" id="notifications" ng-model="subscription.notifications">
+                <label for="notifications"><span class="block mb-2 text-gray-700 font-bold">Enable Notifications</span></label>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg mt-4 border-2 border-teal-500 min-h-[50px]">
+                <span class="font-bold text-teal-500 mb-2 block">Your Selections:</span>
+                <table class="w-full border-collapse mt-4">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-left border-b border-gray-200">Newsletter</td>
+                        <td class="px-4 py-3 text-left border-b border-gray-200"><span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-teal-500 text-white">{{ subscription.newsletter ? 'Yes' : 'No' }}</span></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-left border-b border-gray-200">Terms Accepted</td>
+                        <td class="px-4 py-3 text-left border-b border-gray-200"><span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-teal-500 text-white">{{ subscription.terms ? 'Yes' : 'No' }}</span></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-left border-b border-gray-200">Notifications</td>
+                        <td class="px-4 py-3 text-left border-b border-gray-200"><span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-teal-500 text-white">{{ subscription.notifications ? 'Yes' : 'No' }}</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Example 6: Radio Button Binding -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">6. Radio Button Binding</span></h2>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Select Your Experience Level:</span></label>
+                <div>
+                    <input type="radio" id="beginner" ng-model="experience" value="Beginner">
+                    <label for="beginner" style="display: inline; font-weight: normal; margin-right: 20px;"><span class="block mb-2 text-gray-700 font-bold">Beginner</span></label>
+                    
+                    <input type="radio" id="intermediate" ng-model="experience" value="Intermediate">
+                    <label for="intermediate" style="display: inline; font-weight: normal; margin-right: 20px;"><span class="block mb-2 text-gray-700 font-bold">Intermediate</span></label>
+                    
+                    <input type="radio" id="advanced" ng-model="experience" value="Advanced">
+                    <label for="advanced" style="display: inline; font-weight: normal;"><span class="block mb-2 text-gray-700 font-bold">Advanced</span></label>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg mt-4 border-2 border-teal-500 min-h-[50px]">
+                <span class="font-bold text-teal-500 mb-2 block">Selected Level:</span>
+                <div class="text-gray-800 text-base">
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-teal-500 text-white">{{ experience || 'Not selected' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 7: Range Slider Binding -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">7. Range Slider Two-Way Binding</span></h2>
+            <div class="my-4">
+                <label>Select Your Budget: <span class="inline-block px-4 py-1 bg-teal-500 text-white rounded-full ml-2 font-bold">${{ budget }}</span></label>
+                <input type="range" ng-model="budget" min="0" max="10000" step="100">
+            </div>
+            <div class="my-4">
+                <label>Rate Our Service (1-10): <span class="inline-block px-4 py-1 bg-teal-500 text-white rounded-full ml-2 font-bold">{{ rating }}/10</span></label>
+                <input type="range" ng-model="rating" min="1" max="10" step="1">
+            </div>
+            <div class="bg-white p-4 rounded-lg mt-4 border-2 border-teal-500 min-h-[50px]">
+                <span class="font-bold text-teal-500 mb-2 block">Your Preferences:</span>
+                <p class="text-gray-800 text-base">Budget: <strong>${{ budget }}</strong></p>
+                <p class="text-gray-800 text-base">Rating: <strong>{{ rating }}/10</strong></p>
+            </div>
+        </div>
+
+        <!-- Example 8: Color Picker Binding -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">8. Color Picker Binding</span></h2>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Choose Your Favorite Color:</span></label>
+                <input type="color" ng-model="favoriteColor" style="width: 100px; height: 50px;">
+                <input type="text" ng-model="favoriteColor" placeholder="#000000" style="width: 150px; margin-left: 10px;" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            <div class="w-full h-24 rounded-lg mt-2 border-2 border-gray-300 transition" ng-style="{'background-color': favoriteColor}"></div>
+            <div class="bg-white p-4 rounded-lg mt-4 border-2 border-teal-500 min-h-[50px]">
+                <span class="font-bold text-teal-500 mb-2 block">Selected Color Code:</span>
+                <div class="text-gray-800 text-base">{{ favoriteColor }}</div>
+            </div>
+        </div>
+
+        <!-- Example 9: Shopping Cart Calculator -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">9. Calculator with Two-Way Binding</span></h2>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Product Price:</span></label>
+                <input type="number" ng-model="calculator.price" placeholder="Enter price" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Quantity:</span></label>
+                <input type="number" ng-model="calculator.quantity" placeholder="Enter quantity" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            <div class="my-4">
+                <label><span class="block mb-2 text-gray-700 font-bold">Discount (%):</span></label>
+                <input type="number" ng-model="calculator.discount" placeholder="Enter discount %" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition">
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-md mt-4">
+                <h3>Order Summary:</h3>
+                <table class="w-full border-collapse mt-4">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-left border-b border-gray-200">Price per item:</td>
+                        <td class="px-4 py-3 text-left border-b border-gray-200">${{ calculator.price || 0 }}</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-left border-b border-gray-200">Quantity:</td>
+                        <td class="px-4 py-3 text-left border-b border-gray-200">{{ calculator.quantity || 0 }}</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-left border-b border-gray-200">Subtotal:</td>
+                        <td class="px-4 py-3 text-left border-b border-gray-200">${{ (calculator.price * calculator.quantity) || 0 }}</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-left border-b border-gray-200">Discount:</td>
+                        <td class="px-4 py-3 text-left border-b border-gray-200">{{ calculator.discount || 0 }}%</td>
+                    </tr>
+                    <tr style="font-weight: bold; font-size: 1.2em;" class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-left border-b border-gray-200">Total:</td>
+                        <td class="px-4 py-3 text-left border-b border-gray-200">${{ calculateTotal() }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Example 10: Reset All Button -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl border-l-4 border-teal-500 shadow-md">
+            <h2><span class="text-2xl font-bold text-gray-800 mt-0 border-b-2 border-teal-500 pb-2 block">10. Reset Functionality</span></h2>
+            <button ng-click="resetAll()" class="px-6 py-2 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-lg transition mr-2 mt-2">Reset All Values</button>
+            <button ng-click="loadSampleData()" class="px-6 py-2 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-lg transition mr-2 mt-2">Load Sample Data</button>
+            <p class="text-sm text-gray-500 italic" style="margin-top: 15px;">
+                Click the buttons to see how two-way binding updates all fields instantly!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('bindingApp', []);
+        
+        app.controller('BindingController', function($scope) {
+            // Initialize default values
+            $scope.userName = '';
+            
+            $scope.profile = {
+                firstName: '',
+                lastName: '',
+                email: '',
+                age: null
+            };
+            
+            $scope.message = '';
+            $scope.selectedCountry = '';
+            
+            $scope.subscription = {
+                newsletter: false,
+                terms: false,
+                notifications: false
+            };
+            
+            $scope.experience = '';
+            $scope.budget = 5000;
+            $scope.rating = 5;
+            $scope.favoriteColor = '#4ecdc4';
+            
+            $scope.calculator = {
+                price: 0,
+                quantity: 1,
+                discount: 0
+            };
+            
+            // Calculate total with discount
+            $scope.calculateTotal = function() {
+                var subtotal = ($scope.calculator.price || 0) * ($scope.calculator.quantity || 0);
+                var discount = ($scope.calculator.discount || 0) / 100;
+                var total = subtotal - (subtotal * discount);
+                return total.toFixed(2);
+            };
+            
+            // Reset all values
+            $scope.resetAll = function() {
+                $scope.userName = '';
+                $scope.profile = {
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    age: null
+                };
+                $scope.message = '';
+                $scope.selectedCountry = '';
+                $scope.subscription = {
+                    newsletter: false,
+                    terms: false,
+                    notifications: false
+                };
+                $scope.experience = '';
+                $scope.budget = 5000;
+                $scope.rating = 5;
+                $scope.favoriteColor = '#4ecdc4';
+                $scope.calculator = {
+                    price: 0,
+                    quantity: 1,
+                    discount: 0
+                };
+            };
+            
+            // Load sample data
+            $scope.loadSampleData = function() {
+                $scope.userName = 'John Doe';
+                $scope.profile = {
+                    firstName: 'Jane',
+                    lastName: 'Smith',
+                    email: 'jane.smith@example.com',
+                    age: 28
+                };
+                $scope.message = 'This is a sample message demonstrating two-way data binding in AngularJS!';
+                $scope.selectedCountry = 'USA';
+                $scope.subscription = {
+                    newsletter: true,
+                    terms: true,
+                    notifications: false
+                };
+                $scope.experience = 'Intermediate';
+                $scope.budget = 7500;
+                $scope.rating = 8;
+                $scope.favoriteColor = '#ff6b6b';
+                $scope.calculator = {
+                    price: 99.99,
+                    quantity: 3,
+                    discount: 10
+                };
+            };
+        });
+    </script>
+</body>
+</html>
+
+
+

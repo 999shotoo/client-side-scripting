@@ -1,0 +1,83 @@
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.greeting-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+
+.greeting-card h1 {
+  font-size: 3em;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.message {
+  font-size: 1.5em;
+  margin: 20px 0;
+  font-weight: 300;
+}
+
+.time {
+  font-size: 1.2em;
+  margin: 15px 0;
+  opacity: 0.9;
+}
+
+.refresh-btn {
+  background-color: white;
+  color: #667eea;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1em;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.refresh-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.info-card {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h2 {
+  color: #667eea;
+  margin-top: 0;
+}
+
+.info-card ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.info-card li {
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.info-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #667eea;
+  font-weight: bold;
+}

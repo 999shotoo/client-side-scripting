@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="tableApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 10: AngularJS Data Table Display</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body ng-controller="TableController" class="bg-gradient-to-br from-blue-900 to-blue-700 p-4 md:p-8">
+    <div class="max-w-7xl mx-auto bg-white rounded-2xl p-6 md:p-8 shadow-2xl">
+        <h1 class="text-3xl md:text-4xl font-bold text-blue-900 text-center mb-2">📊 Program 10: AngularJS Data Tables</h1>
+        <p class="text-center text-gray-600 mb-8">Comprehensive Data Display & Management System</p>
+        
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="bg-gradient-to-br from-purple-500 to-purple-700 text-white p-6 rounded-xl shadow-lg text-center">
+                <div class="text-sm opacity-90">Total Employees</div>
+                <div class="text-4xl font-bold my-2">{{ employees.length }}</div>
+            </div>
+            <div class="bg-gradient-to-br from-pink-500 to-red-500 text-white p-6 rounded-xl shadow-lg text-center">
+                <div class="text-sm opacity-90">Total Products</div>
+                <div class="text-4xl font-bold my-2">{{ products.length }}</div>
+            </div>
+            <div class="bg-gradient-to-br from-cyan-500 to-blue-500 text-white p-6 rounded-xl shadow-lg text-center">
+                <div class="text-sm opacity-90">Total Orders</div>
+                <div class="text-4xl font-bold my-2">{{ orders.length }}</div>
+            </div>
+            <div class="bg-gradient-to-br from-green-400 to-green-600 text-white p-6 rounded-xl shadow-lg text-center">
+                <div class="text-sm opacity-90">Active Users</div>
+                <div class="text-4xl font-bold my-2">{{ getActiveCount(employees) }}</div>
+            </div>
+        </div>
+        
+        <!-- Table 1: Employee Management -->
+        <div class="mb-10 p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-md">
+            <div class="flex justify-between items-center mb-5 pb-4 border-b-2 border-blue-900">
+                <h2 class="text-2xl font-bold text-blue-900">👥 Employee Management</h2>
+            </div>
+            
+            <div class="flex flex-wrap gap-3 mb-5 p-4 bg-white rounded-lg">
+                <input type="text" 
+                       ng-model="employeeSearch" 
+                       placeholder="🔍 Search employees..."
+                       class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                <select ng-model="employeeDeptFilter" class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                    <option value="">All Departments</option>
+                    <option value="IT">IT</option>
+                    <option value="HR">HR</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Sales">Sales</option>
+                </select>
+                <select ng-model="employeeStatusFilter" class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                    <option value="">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="On Leave">On Leave</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+                <button class="px-5 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition font-semibold" 
+                        ng-click="sortEmployees('name')">
+                    Sort by Name
+                </button>
+                <button class="px-5 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition font-semibold" 
+                        ng-click="sortEmployees('salary')">
+                    Sort by Salary
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto bg-white rounded-lg shadow">
+                <table class="w-full">
+                    <thead class="bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+                        <tr>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('id', 'employees')">ID</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('name', 'employees')">Name</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('position', 'employees')">Position</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('department', 'employees')">Department</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('salary', 'employees')">Salary</th>
+                            <th class="px-4 py-3 text-left">Join Date</th>
+                            <th class="px-4 py-3 text-left">Status</th>
+                            <th class="px-4 py-3 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="emp in filteredEmployees = (employees | filter:employeeSearch | filter:{department: employeeDeptFilter} | filter:{status: employeeStatusFilter} | orderBy:sortField:sortReverse)" 
+                            class="border-b hover:bg-gray-50 transition">
+                            <td class="px-4 py-3">{{ emp.id }}</td>
+                            <td class="px-4 py-3"><strong>{{ emp.name }}</strong></td>
+                            <td class="px-4 py-3">{{ emp.position }}</td>
+                            <td class="px-4 py-3">{{ emp.department }}</td>
+                            <td class="px-4 py-3">{{ emp.salary | currency }}</td>
+                            <td class="px-4 py-3">{{ emp.joinDate | date:'MMM dd, yyyy' }}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase" ng-class="{
+                                    'bg-green-500 text-white': emp.status === 'Active',
+                                    'bg-yellow-500 text-white': emp.status === 'On Leave',
+                                    'bg-red-500 text-white': emp.status === 'Inactive'
+                                }">
+                                    {{ emp.status }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600" ng-click="viewDetails(emp)">View</button>
+                                    <button class="px-3 py-1 bg-yellow-500 text-white rounded text-xs hover:bg-yellow-600" ng-click="editEmployee(emp)">Edit</button>
+                                    <button class="px-3 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600" ng-click="deleteEmployee(emp.id)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-show="filteredEmployees.length === 0">
+                            <td colspan="8" class="text-center py-16">
+                                <div class="text-gray-400">
+                                    <div class="text-6xl mb-4">🔍</div>
+                                    <h3 class="text-xl font-semibold mb-2">No employees found</h3>
+                                    <p>Try adjusting your search or filters</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 p-4 bg-blue-100 rounded-lg border-l-4 border-blue-500">
+                <strong>Showing {{ filteredEmployees.length }} of {{ employees.length }} employees</strong>
+            </div>
+        </div>
+        
+        <!-- Table 2: Product Inventory -->
+        <div class="mb-10 p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-md">
+            <div class="flex justify-between items-center mb-5 pb-4 border-b-2 border-blue-900">
+                <h2 class="text-2xl font-bold text-blue-900">📦 Product Inventory</h2>
+            </div>
+            
+            <div class="flex flex-wrap gap-3 mb-5 p-4 bg-white rounded-lg">
+                <input type="text" 
+                       ng-model="productSearch" 
+                       placeholder="🔍 Search products..."
+                       class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                <select ng-model="productCategoryFilter" class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Software">Software</option>
+                    <option value="Hardware">Hardware</option>
+                </select>
+                <button class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-500 transition font-semibold" ng-click="addProduct()">+ Add Product</button>
+                <button class="px-5 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition font-semibold" ng-click="refreshProducts()">🔄 Refresh</button>
+            </div>
+            
+            <div class="overflow-x-auto bg-white rounded-lg shadow">
+                <table class="w-full">
+                    <thead class="bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+                        <tr>
+                            <th class="px-4 py-3 text-left">Product ID</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('name', 'products')">Product Name</th>
+                            <th class="px-4 py-3 text-left">Category</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('price', 'products')">Price</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('stock', 'products')">Stock</th>
+                            <th class="px-4 py-3 text-left">Stock Status</th>
+                            <th class="px-4 py-3 text-left">Rating</th>
+                            <th class="px-4 py-3 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="product in products | filter:productSearch | filter:{category: productCategoryFilter} | orderBy:sortField:sortReverse" 
+                            class="border-b hover:bg-gray-50 transition">
+                            <td class="px-4 py-3">{{ product.id }}</td>
+                            <td class="px-4 py-3"><strong>{{ product.name }}</strong></td>
+                            <td class="px-4 py-3">{{ product.category }}</td>
+                            <td class="px-4 py-3">{{ product.price | currency }}</td>
+                            <td class="px-4 py-3">{{ product.stock }}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase" ng-class="{
+                                    'bg-green-500 text-white': product.stock > 50,
+                                    'bg-yellow-500 text-white': product.stock > 0 && product.stock <= 50,
+                                    'bg-red-500 text-white': product.stock === 0
+                                }">
+                                    {{ product.stock > 50 ? 'In Stock' : (product.stock > 0 ? 'Low Stock' : 'Out of Stock') }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">⭐ {{ product.rating }}/5</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="px-3 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-500" ng-click="updateStock(product)">Stock+</button>
+                                    <button class="px-3 py-1 bg-yellow-500 text-white rounded text-xs hover:bg-yellow-600">Edit</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Table 3: Order History -->
+        <div class="mb-10 p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-md">
+            <div class="flex justify-between items-center mb-5 pb-4 border-b-2 border-blue-900">
+                <h2 class="text-2xl font-bold text-blue-900">🛒 Order History</h2>
+            </div>
+            
+            <div class="flex flex-wrap gap-3 mb-5 p-4 bg-white rounded-lg">
+                <input type="text" 
+                       ng-model="orderSearch" 
+                       placeholder="🔍 Search orders..."
+                       class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                <select ng-model="orderStatusFilter" class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <button class="px-5 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition font-semibold" 
+                        ng-click="sortBy('orderDate', 'orders')">
+                    Sort by Date
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto bg-white rounded-lg shadow">
+                <table class="w-full">
+                    <thead class="bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+                        <tr>
+                            <th class="px-4 py-3 text-left">Order ID</th>
+                            <th class="px-4 py-3 text-left">Customer</th>
+                            <th class="px-4 py-3 text-left">Product</th>
+                            <th class="px-4 py-3 text-left">Quantity</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('total', 'orders')">Total</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('orderDate', 'orders')">Order Date</th>
+                            <th class="px-4 py-3 text-left">Status</th>
+                            <th class="px-4 py-3 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="order in orders | filter:orderSearch | filter:{status: orderStatusFilter} | orderBy:sortField:sortReverse | limitTo:itemsPerPage:((currentPage-1)*itemsPerPage)" 
+                            class="border-b hover:bg-gray-50 transition">
+                            <td class="px-4 py-3"><strong>{{ order.orderId }}</strong></td>
+                            <td class="px-4 py-3">{{ order.customer }}</td>
+                            <td class="px-4 py-3">{{ order.product }}</td>
+                            <td class="px-4 py-3">{{ order.quantity }}</td>
+                            <td class="px-4 py-3">{{ order.total | currency }}</td>
+                            <td class="px-4 py-3">{{ order.orderDate | date:'MMM dd, yyyy' }}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase" ng-class="{
+                                    'bg-yellow-500 text-white': order.status === 'Pending',
+                                    'bg-blue-500 text-white': order.status === 'Processing',
+                                    'bg-orange-500 text-white': order.status === 'Shipped',
+                                    'bg-green-500 text-white': order.status === 'Delivered',
+                                    'bg-red-500 text-white': order.status === 'Cancelled'
+                                }">
+                                    {{ order.status }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600" ng-click="trackOrder(order)">Track</button>
+                                    <button class="px-3 py-1 bg-yellow-500 text-white rounded text-xs hover:bg-yellow-600">Update</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="flex flex-wrap justify-center items-center gap-3 mt-5 p-4 bg-white rounded-lg">
+                <button class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed" 
+                        ng-click="previousPage()" 
+                        ng-disabled="currentPage === 1">
+                    Previous
+                </button>
+                <span class="font-bold text-blue-900">Page {{ currentPage }} of {{ getTotalPages() }}</span>
+                <button class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed" 
+                        ng-click="nextPage()" 
+                        ng-disabled="currentPage >= getTotalPages()">
+                    Next
+                </button>
+                <select ng-model="itemsPerPage" 
+                        ng-change="currentPage = 1"
+                        class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                    <option value="5">5 per page</option>
+                    <option value="10">10 per page</option>
+                    <option value="20">20 per page</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Table 4: Simple Student Data -->
+        <div class="mb-10 p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-md">
+            <div class="flex justify-between items-center mb-5 pb-4 border-b-2 border-blue-900">
+                <h2 class="text-2xl font-bold text-blue-900">🎓 Student Records</h2>
+            </div>
+            
+            <div class="overflow-x-auto bg-white rounded-lg shadow">
+                <table class="w-full">
+                    <thead class="bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+                        <tr>
+                            <th class="px-4 py-3 text-left">Roll No</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('name', 'students')">Name</th>
+                            <th class="px-4 py-3 text-left">Course</th>
+                            <th class="px-4 py-3 text-left">Email</th>
+                            <th class="px-4 py-3 text-left cursor-pointer hover:bg-blue-800" ng-click="sortBy('grade', 'students')">Grade</th>
+                            <th class="px-4 py-3 text-left">Attendance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="student in students | orderBy:sortField:sortReverse" 
+                            class="border-b hover:bg-gray-50 transition">
+                            <td class="px-4 py-3">{{ student.rollNo }}</td>
+                            <td class="px-4 py-3"><strong>{{ student.name }}</strong></td>
+                            <td class="px-4 py-3">{{ student.course }}</td>
+                            <td class="px-4 py-3">{{ student.email }}</td>
+                            <td class="px-4 py-3"><strong>{{ student.grade }}</strong></td>
+                            <td class="px-4 py-3">{{ student.attendance }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('tableApp', []);
+        
+        app.controller('TableController', function($scope) {
+            // Sorting variables
+            $scope.sortField = '';
+            $scope.sortReverse = false;
+            
+            // Pagination
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = 10;
+            
+            // Employees Data
+            $scope.employees = [
+                { id: 'E001', name: 'John Smith', position: 'Software Engineer', department: 'IT', salary: 75000, joinDate: new Date('2020-01-15'), status: 'Active' },
+                { id: 'E002', name: 'Sarah Johnson', position: 'HR Manager', department: 'HR', salary: 85000, joinDate: new Date('2019-03-20'), status: 'Active' },
+                { id: 'E003', name: 'Michael Brown', position: 'Financial Analyst', department: 'Finance', salary: 70000, joinDate: new Date('2021-06-10'), status: 'Active' },
+                { id: 'E004', name: 'Emily Davis', position: 'Marketing Specialist', department: 'Marketing', salary: 65000, joinDate: new Date('2020-09-05'), status: 'On Leave' },
+                { id: 'E005', name: 'David Wilson', position: 'Sales Executive', department: 'Sales', salary: 60000, joinDate: new Date('2022-02-14'), status: 'Active' },
+                { id: 'E006', name: 'Lisa Anderson', position: 'Senior Developer', department: 'IT', salary: 90000, joinDate: new Date('2018-11-30'), status: 'Active' },
+                { id: 'E007', name: 'Robert Taylor', position: 'Product Manager', department: 'IT', salary: 95000, joinDate: new Date('2019-07-22'), status: 'Active' },
+                { id: 'E008', name: 'Jennifer Lee', position: 'Accountant', department: 'Finance', salary: 68000, joinDate: new Date('2021-04-18'), status: 'Inactive' }
+            ];
+            
+            // Products Data
+            $scope.products = [
+                { id: 'P001', name: 'Laptop Pro 15"', category: 'Electronics', price: 1299.99, stock: 45, rating: 4.5 },
+                { id: 'P002', name: 'Wireless Mouse', category: 'Accessories', price: 29.99, stock: 200, rating: 4.2 },
+                { id: 'P003', name: 'Mechanical Keyboard', category: 'Accessories', price: 89.99, stock: 75, rating: 4.7 },
+                { id: 'P004', name: '27" Monitor', category: 'Electronics', price: 399.99, stock: 30, rating: 4.6 },
+                { id: 'P005', name: 'USB-C Hub', category: 'Accessories', price: 49.99, stock: 0, rating: 4.3 },
+                { id: 'P006', name: 'Webcam HD', category: 'Electronics', price: 79.99, stock: 55, rating: 4.4 },
+                { id: 'P007', name: 'Office Suite License', category: 'Software', price: 149.99, stock: 100, rating: 4.8 },
+                { id: 'P008', name: 'External SSD 1TB', category: 'Hardware', price: 129.99, stock: 20, rating: 4.9 }
+            ];
+            
+            // Orders Data
+            $scope.orders = [
+                { orderId: 'ORD-1001', customer: 'Alice Cooper', product: 'Laptop Pro', quantity: 1, total: 1299.99, orderDate: new Date('2026-02-20'), status: 'Delivered' },
+                { orderId: 'ORD-1002', customer: 'Bob Martin', product: 'Wireless Mouse', quantity: 3, total: 89.97, orderDate: new Date('2026-02-22'), status: 'Shipped' },
+                { orderId: 'ORD-1003', customer: 'Carol White', product: 'Monitor', quantity: 2, total: 799.98, orderDate: new Date('2026-02-23'), status: 'Processing' },
+                { orderId: 'ORD-1004', customer: 'Daniel Green', product: 'Keyboard', quantity: 1, total: 89.99, orderDate: new Date('2026-02-24'), status: 'Pending' },
+                { orderId: 'ORD-1005', customer: 'Eva Brown', product: 'Webcam', quantity: 2, total: 159.98, orderDate: new Date('2026-02-25'), status: 'Delivered' },
+                { orderId: 'ORD-1006', customer: 'Frank Miller', product: 'USB-C Hub', quantity: 1, total: 49.99, orderDate: new Date('2026-02-25'), status: 'Cancelled' },
+                { orderId: 'ORD-1007', customer: 'Grace Lee', product: 'External SSD', quantity: 1, total: 129.99, orderDate: new Date('2026-02-26'), status: 'Processing' },
+                { orderId: 'ORD-1008', customer: 'Henry Wilson', product: 'Office Suite', quantity: 5, total: 749.95, orderDate: new Date('2026-02-26'), status: 'Pending' },
+                { orderId: 'ORD-1009', customer: 'Iris Taylor', product: 'Monitor', quantity: 1, total: 399.99, orderDate: new Date('2026-02-27'), status: 'Shipped' },
+                { orderId: 'ORD-1010', customer: 'Jack Davis', product: 'Laptop Pro', quantity: 1, total: 1299.99, orderDate: new Date('2026-02-27'), status: 'Processing' }
+            ];
+            
+            // Students Data
+            $scope.students = [
+                { rollNo: 'S001', name: 'Alex Johnson', course: 'Computer Science', email: 'alex.j@university.edu', grade: 'A', attendance: 95 },
+                { rollNo: 'S002', name: 'Maria Garcia', course: 'Business Administration', email: 'maria.g@university.edu', grade: 'B+', attendance: 88 },
+                { rollNo: 'S003', name: 'James Chen', course: 'Engineering', email: 'james.c@university.edu', grade: 'A-', attendance: 92 },
+                { rollNo: 'S004', name: 'Sophie Martin', course: 'Psychology', email: 'sophie.m@university.edu', grade: 'B', attendance: 85 },
+                { rollNo: 'S005', name: 'Omar Hassan', course: 'Computer Science', email: 'omar.h@university.edu', grade: 'A+', attendance: 98 }
+            ];
+            
+            // Sort function
+            $scope.sortBy = function(field, dataType) {
+                if ($scope.sortField === field) {
+                    $scope.sortReverse = !$scope.sortReverse;
+                } else {
+                    $scope.sortField = field;
+                    $scope.sortReverse = false;
+                }
+            };
+            
+            // Filter functions
+            $scope.getActiveCount = function(data) {
+                return data.filter(item => item.status === 'Active').length;
+            };
+            
+            // Pagination functions
+            $scope.getTotalPages = function() {
+                return Math.ceil($scope.orders.length / $scope.itemsPerPage);
+            };
+            
+            $scope.nextPage = function() {
+                if ($scope.currentPage < $scope.getTotalPages()) {
+                    $scope.currentPage++;
+                }
+            };
+            
+            $scope.previousPage = function() {
+                if ($scope.currentPage > 1) {
+                    $scope.currentPage--;
+                }
+            };
+            
+            // Action functions
+            $scope.viewDetails = function(employee) {
+                alert('Viewing details for: ' + employee.name);
+            };
+            
+            $scope.editEmployee = function(employee) {
+                alert('Editing employee: ' + employee.name);
+            };
+            
+            $scope.deleteEmployee = function(id) {
+                if (confirm('Are you sure you want to delete this employee?')) {
+                    $scope.employees = $scope.employees.filter(emp => emp.id !== id);
+                }
+            };
+            
+            $scope.addProduct = function() {
+                alert('Add Product functionality would open a form modal here.');
+            };
+            
+            $scope.refreshProducts = function() {
+                alert('Products refreshed!');
+            };
+            
+            $scope.updateStock = function(product) {
+                product.stock += 10;
+                alert('Stock updated for ' + product.name);
+            };
+            
+            $scope.trackOrder = function(order) {
+                alert('Tracking order: ' + order.orderId + '\nStatus: ' + order.status);
+            };
+        });
+    </script>
+</body>
+</html>

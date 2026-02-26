@@ -1,0 +1,83 @@
+{
+  "student": {
+    "id": 101,
+    "name": "John Doe",
+    "age": 20,
+    "email": "john.doe@example.com",
+    "courses": ["Mathematics", "Physics", "Computer Science"],
+    "grades": {
+      "Mathematics": "A",
+      "Physics": "B+",
+      "Computer Science": "A+"
+    },
+    "isActive": true,
+    "address": {
+      "street": "123 Main Street",
+      "city": "New York",
+      "zipCode": "10001"
+    }
+  },
+  "employees": [
+    {
+      "employeeId": 1001,
+      "name": "Alice Smith",
+      "position": "Software Engineer",
+      "department": "IT",
+      "salary": 75000,
+      "skills": ["JavaScript", "Python", "React"]
+    },
+    {
+      "employeeId": 1002,
+      "name": "Bob Johnson",
+      "position": "Project Manager",
+      "department": "Management",
+      "salary": 85000,
+      "skills": ["Leadership", "Agile", "Communication"]
+    }
+  ],
+  "products": [
+    {
+      "productId": "P001",
+      "name": "Laptop",
+      "category": "Electronics",
+      "price": 999.99,
+      "inStock": true,
+      "specifications": {
+        "brand": "TechBrand",
+        "RAM": "16GB",
+        "storage": "512GB SSD"
+      }
+    },
+    {
+      "productId": "P002",
+      "name": "Smartphone",
+      "category": "Electronics",
+      "price": 699.99,
+      "inStock": false,
+      "specifications": {
+        "brand": "PhoneCorp",
+        "screenSize": "6.5 inches",
+        "camera": "48MP"
+      }
+    }
+  ],
+  "library": {
+    "name": "City Public Library",
+    "books": [
+      {
+        "isbn": "978-0-123456-78-9",
+        "title": "The Great Adventure",
+        "author": "Jane Writer",
+        "year": 2020,
+        "available": true
+      },
+      {
+        "isbn": "978-0-987654-32-1",
+        "title": "Learning JavaScript",
+        "author": "Tech Author",
+        "year": 2021,
+        "available": false
+      }
+    ]
+  }
+}

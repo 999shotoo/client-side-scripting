@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 1: Hello World</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full">
+        <h1 class="text-4xl font-bold text-gray-800 mb-6 text-center">Program 1: Display "Hello World"</h1>
+        
+        <div class="space-y-4">
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                <p class="text-sm text-blue-700 font-semibold mb-1">Method 1: console.log()</p>
+                <p class="text-gray-600">Check the browser console (F12) to see the output</p>
+            </div>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+                <p class="text-sm text-green-700 font-semibold mb-1">Method 2: document.write()</p>
+                <div id="writeOutput" class="text-gray-700"></div>
+            </div>
+            
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded">
+                <p class="text-sm text-purple-700 font-semibold mb-1">Method 3: alert()</p>
+                <p class="text-gray-600">An alert box will appear when the page loads</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Method 1: Using console.log()
+        console.log("Hello World");
+        
+        // Method 2: Using document.write() - modified to not overwrite page
+        document.getElementById('writeOutput').innerHTML = '<h2 class="text-lg font-semibold">Using document.write():</h2><p>Hello World</p>';
+        
+        // Method 3: Using alert()
+        alert("Hello World");
+    </script>
+</body>
+</html>

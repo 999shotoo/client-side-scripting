@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="dataModelApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 6: AngularJS Data Model View</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-purple-600 to-indigo-700 min-h-screen py-8 px-4" ng-controller="DataModelController">
+    <h1 class="text-4xl font-bold text-center text-white drop-shadow-lg mb-8">Program 6: AngularJS Data Model View</h1>
+    
+    <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
+        <!-- User Profile Section -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-xl border-l-4 border-purple-600">
+            <h2 class="text-2xl font-bold text-purple-600 mb-4">User Profile Data Model</h2>
+            <div class="bg-white p-5 rounded-lg shadow-sm">
+                <div class="grid grid-cols-2 gap-4">
+                    <div><span class="font-bold text-gray-600">User ID:</span> <span class="text-gray-800">{{ userProfile.id }}</span></div>
+                    <div><span class="font-bold text-gray-600">Name:</span> <span class="text-gray-800">{{ userProfile.name }}</span></div>
+                    <div><span class="font-bold text-gray-600">Email:</span> <span class="text-gray-800">{{ userProfile.email }}</span></div>
+                    <div><span class="font-bold text-gray-600">Role:</span> <span class="text-gray-800">{{ userProfile.role }}</span></div>
+                    <div><span class="font-bold text-gray-600">Department:</span> <span class="text-gray-800">{{ userProfile.department }}</span></div>
+                    <div><span class="font-bold text-gray-600">Join Date:</span> <span class="text-gray-800">{{ userProfile.joinDate | date:'fullDate' }}</span></div>
+                    <div>
+                        <span class="font-bold text-gray-600">Status:</span> 
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold text-white" ng-class="{'bg-green-500': userProfile.isActive, 'bg-red-500': !userProfile.isActive}">
+                            {{ userProfile.isActive ? 'Active' : 'Inactive' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Information Section -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-xl border-l-4 border-purple-600">
+            <h2 class="text-2xl font-bold text-purple-600 mb-4">Company Information Data Model</h2>
+            <div class="bg-white p-5 rounded-lg shadow-sm">
+                <div class="grid grid-cols-2 gap-3">
+                    <div><span class="font-bold text-gray-600">Company Name:</span> <span class="text-gray-800">{{ company.name }}</span></div>
+                    <div><span class="font-bold text-gray-600">Industry:</span> <span class="text-gray-800">{{ company.industry }}</span></div>
+                    <div><span class="font-bold text-gray-600">Employees:</span> <span class="text-gray-800">{{ company.employees }}</span></div>
+                    <div><span class="font-bold text-gray-600">Founded:</span> <span class="text-gray-800">{{ company.founded }}</span></div>
+                    <div><span class="font-bold text-gray-600">Headquarters:</span> <span class="text-gray-800">{{ company.headquarters }}</span></div>
+                    <div><span class="font-bold text-gray-600">Website:</span> <span class="text-gray-800">{{ company.website }}</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-xl border-l-4 border-purple-600">
+            <h2 class="text-2xl font-bold text-purple-600 mb-4">Project Statistics</h2>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="bg-white text-center p-6 rounded-xl shadow-sm">
+                    <div class="text-4xl font-bold text-purple-600">{{ statistics.totalProjects }}</div>
+                    <div class="text-gray-600 mt-2">Total Projects</div>
+                </div>
+                <div class="bg-white text-center p-6 rounded-xl shadow-sm">
+                    <div class="text-4xl font-bold text-purple-600">{{ statistics.completedProjects }}</div>
+                    <div class="text-gray-600 mt-2">Completed</div>
+                </div>
+                <div class="bg-white text-center p-6 rounded-xl shadow-sm">
+                    <div class="text-4xl font-bold text-purple-600">{{ statistics.activeProjects }}</div>
+                    <div class="text-gray-600 mt-2">Active</div>
+                </div>
+                <div class="bg-white text-center p-6 rounded-xl shadow-sm">
+                    <div class="text-4xl font-bold text-purple-600">{{ statistics.pendingProjects }}</div>
+                    <div class="text-gray-600 mt-2">Pending</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Data Model -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-xl border-l-4 border-purple-600">
+            <h2 class="text-2xl font-bold text-purple-600 mb-4">Products Data Model</h2>
+            <div class="mb-4 flex gap-2">
+                <input type="text" ng-model="searchProduct" placeholder="Search products..." class="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                <button ng-click="clearSearch()" class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg transition">Clear</button>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-purple-600 text-white">
+                            <th class="px-4 py-3 text-left">Product ID</th>
+                            <th class="px-4 py-3 text-left">Name</th>
+                            <th class="px-4 py-3 text-left">Category</th>
+                            <th class="px-4 py-3 text-left">Price</th>
+                            <th class="px-4 py-3 text-left">Stock</th>
+                            <th class="px-4 py-3 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="product in products | filter:searchProduct" class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-3">{{ product.id }}</td>
+                            <td class="px-4 py-3">{{ product.name }}</td>
+                            <td class="px-4 py-3">{{ product.category }}</td>
+                            <td class="px-4 py-3">{{ product.price | currency }}</td>
+                            <td class="px-4 py-3">{{ product.stock }}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold text-white" ng-class="{
+                                    'bg-green-500': product.stock > 50,
+                                    'bg-yellow-500': product.stock > 0 && product.stock <= 50,
+                                    'bg-red-500': product.stock === 0
+                                }">
+                                    {{ product.stock > 50 ? 'In Stock' : (product.stock > 0 ? 'Low Stock' : 'Out of Stock') }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Employees Data Model -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-xl border-l-4 border-purple-600">
+            <h2 class="text-2xl font-bold text-purple-600 mb-4">Employees Data Model</h2>
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-purple-600 text-white">
+                            <th class="px-4 py-3 text-left">ID</th>
+                            <th class="px-4 py-3 text-left">Name</th>
+                            <th class="px-4 py-3 text-left">Position</th>
+                            <th class="px-4 py-3 text-left">Department</th>
+                            <th class="px-4 py-3 text-left">Salary</th>
+                            <th class="px-4 py-3 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="employee in employees" class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-3">{{ employee.id }}</td>
+                            <td class="px-4 py-3">{{ employee.name }}</td>
+                            <td class="px-4 py-3">{{ employee.position }}</td>
+                            <td class="px-4 py-3">{{ employee.department }}</td>
+                            <td class="px-4 py-3">{{ employee.salary | currency }}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold text-white" ng-class="{'bg-green-500': employee.status === 'Active', 'bg-red-500': employee.status !== 'Active'}">
+                                    {{ employee.status }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Array of Objects -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-xl border-l-4 border-purple-600">
+            <h2 class="text-2xl font-bold text-purple-600 mb-4">Task List Data Model</h2>
+            <div ng-repeat="task in tasks" class="mb-3">
+                <div class="bg-white p-5 rounded-lg shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <strong class="text-lg text-gray-800">{{ task.title }}</strong>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold text-white ml-4" ng-class="{
+                            'bg-green-500': task.status === 'Completed',
+                            'bg-yellow-500': task.status === 'In Progress',
+                            'bg-red-500': task.status === 'Not Started'
+                        }">
+                            {{ task.status }}
+                        </span>
+                    </div>
+                    <p class="text-gray-600 my-2">{{ task.description }}</p>
+                    <small class="text-gray-500">Priority: {{ task.priority }} | Due: {{ task.dueDate | date:'shortDate' }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('dataModelApp', []);
+        
+        app.controller('DataModelController', function($scope) {
+            // User Profile Data Model
+            $scope.userProfile = {
+                id: 'USR-1001',
+                name: 'John Doe',
+                email: 'john.doe@company.com',
+                role: 'Senior Developer',
+                department: 'Engineering',
+                joinDate: new Date('2020-03-15'),
+                isActive: true
+            };
+
+            // Company Data Model
+            $scope.company = {
+                name: 'Tech Solutions Inc.',
+                industry: 'Information Technology',
+                employees: 500,
+                founded: 2010,
+                headquarters: 'San Francisco, CA',
+                website: 'www.techsolutions.com'
+            };
+
+            // Statistics Data Model
+            $scope.statistics = {
+                totalProjects: 45,
+                completedProjects: 28,
+                activeProjects: 12,
+                pendingProjects: 5
+            };
+
+            // Products Data Model (Array of Objects)
+            $scope.products = [
+                { id: 'P001', name: 'Laptop Pro', category: 'Electronics', price: 1299.99, stock: 75 },
+                { id: 'P002', name: 'Wireless Mouse', category: 'Accessories', price: 29.99, stock: 150 },
+                { id: 'P003', name: 'USB-C Cable', category: 'Accessories', price: 12.99, stock: 45 },
+                { id: 'P004', name: 'Monitor 27"', category: 'Electronics', price: 399.99, stock: 20 },
+                { id: 'P005', name: 'Keyboard Mechanical', category: 'Accessories', price: 89.99, stock: 0 },
+                { id: 'P006', name: 'Webcam HD', category: 'Electronics', price: 79.99, stock: 60 }
+            ];
+
+            // Employees Data Model (Array of Objects)
+            $scope.employees = [
+                { id: 101, name: 'Alice Johnson', position: 'Project Manager', department: 'Management', salary: 85000, status: 'Active' },
+                { id: 102, name: 'Bob Smith', position: 'Software Engineer', department: 'Engineering', salary: 75000, status: 'Active' },
+                { id: 103, name: 'Carol White', position: 'UX Designer', department: 'Design', salary: 70000, status: 'Active' },
+                { id: 104, name: 'David Brown', position: 'DevOps Engineer', department: 'Operations', salary: 80000, status: 'Active' },
+                { id: 105, name: 'Emma Davis', position: 'QA Analyst', department: 'Quality', salary: 65000, status: 'On Leave' }
+            ];
+
+            // Tasks Data Model (Array of Objects)
+            $scope.tasks = [
+                {
+                    title: 'Update User Authentication',
+                    description: 'Implement OAuth 2.0 for user login',
+                    status: 'In Progress',
+                    priority: 'High',
+                    dueDate: new Date('2026-03-15')
+                },
+                {
+                    title: 'Database Optimization',
+                    description: 'Optimize database queries for better performance',
+                    status: 'Not Started',
+                    priority: 'Medium',
+                    dueDate: new Date('2026-04-01')
+                },
+                {
+                    title: 'UI Redesign',
+                    description: 'Redesign the dashboard interface',
+                    status: 'Completed',
+                    priority: 'High',
+                    dueDate: new Date('2026-02-20')
+                },
+                {
+                    title: 'API Documentation',
+                    description: 'Complete API documentation for developers',
+                    status: 'In Progress',
+                    priority: 'Low',
+                    dueDate: new Date('2026-03-25')
+                }
+            ];
+
+            // Search functionality
+            $scope.searchProduct = '';
+            
+            $scope.clearSearch = function() {
+                $scope.searchProduct = '';
+            };
+        });
+    </script>
+</body>
+</html>

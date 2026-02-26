@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="formApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 5: AngularJS Form with Validations</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        input.ng-invalid.ng-touched,
+        select.ng-invalid.ng-touched,
+        textarea.ng-invalid.ng-touched {
+            border-color: #e74c3c !important;
+        }
+        input.ng-valid.ng-touched,
+        select.ng-valid.ng-touched,
+        textarea.ng-valid.ng-touched {
+            border-color: #27ae60 !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen py-12 px-4" ng-controller="FormController">
+    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-2xl p-8">
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-2">Registration Form</h1>
+        <p class="text-center text-gray-600 mb-6">Program 5: Form with Various Controls and Validations</p>
+        
+        <form name="registrationForm" ng-submit="submitForm()" novalidate>
+            
+            <!-- Full Name -->
+            <div class="mb-5">
+                <label for="fullName" class="block mb-2 text-sm font-bold text-gray-700">Full Name *</label>
+                <input type="text" 
+                       id="fullName" 
+                       name="fullName" 
+                       ng-model="user.fullName" 
+                       required 
+                       ng-minlength="3"
+                       ng-maxlength="50"
+                       class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition">
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.fullName.$touched && registrationForm.fullName.$error.required">
+                    Full name is required.
+                </div>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.fullName.$touched && registrationForm.fullName.$error.minlength">
+                    Name must be at least 3 characters.
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-5">
+                <label for="email" class="block mb-2 text-sm font-bold text-gray-700">Email Address *</label>
+                <input type="email" 
+                       id="email" 
+                       name="email" 
+                       ng-model="user.email" 
+                       required
+                       class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition">
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.email.$touched && registrationForm.email.$error.required">
+                    Email is required.
+                </div>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.email.$touched && registrationForm.email.$error.email">
+                    Please enter a valid email address.
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-5">
+                <label for="password" class="block mb-2 text-sm font-bold text-gray-700">Password *</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       ng-model="user.password" 
+                       required 
+                       ng-minlength="6"
+                       class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition">
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.password.$touched && registrationForm.password.$error.required">
+                    Password is required.
+                </div>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.password.$touched && registrationForm.password.$error.minlength">
+                    Password must be at least 6 characters.
+                </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-5">
+                <label for="confirmPassword" class="block mb-2 text-sm font-bold text-gray-700">Confirm Password *</label>
+                <input type="password" 
+                       id="confirmPassword" 
+                       name="confirmPassword" 
+                       ng-model="user.confirmPassword" 
+                       required
+                       compare-to="user.password"
+                       class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition">
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.confirmPassword.$touched && registrationForm.confirmPassword.$error.required">
+                    Please confirm your password.
+                </div>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.confirmPassword.$touched && user.password !== user.confirmPassword && user.confirmPassword">
+                    Passwords do not match.
+                </div>
+            </div>
+
+            <!-- Age -->
+            <div class="mb-5">
+                <label for="age" class="block mb-2 text-sm font-bold text-gray-700">Age *</label>
+                <input type="number" 
+                       id="age" 
+                       name="age" 
+                       ng-model="user.age" 
+                       required 
+                       min="18" 
+                       max="100"
+                       class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition">
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.age.$touched && registrationForm.age.$error.required">
+                    Age is required.
+                </div>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.age.$touched && registrationForm.age.$error.min">
+                    You must be at least 18 years old.
+                </div>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.age.$touched && registrationForm.age.$error.max">
+                    Age cannot exceed 100.
+                </div>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="mb-5">
+                <label for="phone" class="block mb-2 text-sm font-bold text-gray-700">Phone Number *</label>
+                <input type="tel" 
+                       id="phone" 
+                       name="phone" 
+                       ng-model="user.phone" 
+                       required 
+                       ng-pattern="/^[0-9]{10}$/"
+                       class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition">
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.phone.$touched && registrationForm.phone.$error.required">
+                    Phone number is required.
+                </div>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.phone.$touched && registrationForm.phone.$error.pattern">
+                    Please enter a valid 10-digit phone number.
+                </div>
+            </div>
+
+            <!-- Gender (Radio Buttons) -->
+            <div class="mb-5">
+                <label class="block mb-2 text-sm font-bold text-gray-700">Gender *</label>
+                <div class="flex gap-6">
+                    <div class="flex items-center">
+                        <input type="radio" id="male" name="gender" ng-model="user.gender" value="Male" required class="mr-2">
+                        <label for="male" class="text-gray-700 font-normal">Male</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="female" name="gender" ng-model="user.gender" value="Female" required class="mr-2">
+                        <label for="female" class="text-gray-700 font-normal">Female</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="other" name="gender" ng-model="user.gender" value="Other" required class="mr-2">
+                        <label for="other" class="text-gray-700 font-normal">Other</label>
+                    </div>
+                </div>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.gender.$touched && registrationForm.gender.$error.required">
+                    Please select a gender.
+                </div>
+            </div>
+
+            <!-- Country (Dropdown) -->
+            <div class="mb-5">
+                <label for="country" class="block mb-2 text-sm font-bold text-gray-700">Country *</label>
+                <select id="country" 
+                        name="country" 
+                        ng-model="user.country" 
+                        required
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition">
+                    <option value="">-- Select Country --</option>
+                    <option value="USA">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="India">India</option>
+                    <option value="Australia">Australia</option>
+                </select>
+                <div class="text-red-500 text-xs mt-1" ng-show="registrationForm.country.$touched && registrationForm.country.$error.required">
+                    Please select a country.
+                </div>
+            </div>
+
+            <!-- Interests (Checkboxes) -->
+            <div class="mb-5">
+                <label class="block mb-2 text-sm font-bold text-gray-700">Interests</label>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="sports" ng-model="user.interests.sports" class="mr-2">
+                        <label for="sports" class="text-gray-700 font-normal">Sports</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="music" ng-model="user.interests.music" class="mr-2">
+                        <label for="music" class="text-gray-700 font-normal">Music</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="reading" ng-model="user.interests.reading" class="mr-2">
+                        <label for="reading" class="text-gray-700 font-normal">Reading</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="technology" ng-model="user.interests.technology" class="mr-2">
+                        <label for="technology" class="text-gray-700 font-normal">Technology</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments (Textarea) -->
+            <div class="mb-5">
+                <label for="comments" class="block mb-2 text-sm font-bold text-gray-700">Additional Comments</label>
+                <textarea id="comments" 
+                          name="comments" 
+                          ng-model="user.comments" 
+                          rows="4" 
+                          ng-maxlength="500"
+                          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"></textarea>
+                <div class="text-green-600 text-xs mt-1" ng-show="user.comments">
+                    {{ 500 - user.comments.length }} characters remaining
+                </div>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="mb-6">
+                <div class="flex items-start">
+                    <input type="checkbox" 
+                           id="terms" 
+                           name="terms" 
+                           ng-model="user.terms" 
+                           required
+                           class="mr-2 mt-1">
+                    <label for="terms" class="text-gray-700 font-normal">I agree to the terms and conditions *</label>
+                </div>
+                <div class="text-red-500 text-xs mt-1 ml-6" ng-show="registrationForm.terms.$touched && registrationForm.terms.$error.required">
+                    You must agree to the terms and conditions.
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" 
+                    ng-disabled="registrationForm.$invalid"
+                    class="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                Submit Registration
+            </button>
+        </form>
+
+        <!-- Display Submitted Data -->
+        <div class="mt-6 p-6 bg-green-100 rounded-lg border-l-4 border-green-500" ng-show="submitted">
+            <h3 class="text-xl font-bold text-green-700 mb-4">Registration Successful!</h3>
+            <p class="mb-2"><strong>Name:</strong> {{ user.fullName }}</p>
+            <p class="mb-2"><strong>Email:</strong> {{ user.email }}</p>
+            <p class="mb-2"><strong>Age:</strong> {{ user.age }}</p>
+            <p class="mb-2"><strong>Phone:</strong> {{ user.phone }}</p>
+            <p class="mb-2"><strong>Gender:</strong> {{ user.gender }}</p>
+            <p class="mb-2"><strong>Country:</strong> {{ user.country }}</p>
+            <p class="mb-2"><strong>Interests:</strong> {{ getSelectedInterests() }}</p>
+            <p class="mb-2"><strong>Comments:</strong> {{ user.comments || 'None' }}</p>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('formApp', []);
+        
+        app.controller('FormController', function($scope) {
+            // Initialize user object
+            $scope.user = {
+                fullName: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+                age: null,
+                phone: '',
+                gender: '',
+                country: '',
+                interests: {
+                    sports: false,
+                    music: false,
+                    reading: false,
+                    technology: false
+                },
+                comments: '',
+                terms: false
+            };
+            
+            $scope.submitted = false;
+            
+            // Submit form function
+            $scope.submitForm = function() {
+                if ($scope.registrationForm.$valid) {
+                    $scope.submitted = true;
+                    console.log('Form submitted successfully:', $scope.user);
+                }
+            };
+            
+            // Get selected interests
+            $scope.getSelectedInterests = function() {
+                var interests = [];
+                if ($scope.user.interests.sports) interests.push('Sports');
+                if ($scope.user.interests.music) interests.push('Music');
+                if ($scope.user.interests.reading) interests.push('Reading');
+                if ($scope.user.interests.technology) interests.push('Technology');
+                return interests.length > 0 ? interests.join(', ') : 'None';
+            };
+        });
+    </script>
+</body>
+</html>
